@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+     body {
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url('/assets/images/studentrgstr.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 15px; 
+      background-size: cover;
+       animation: gradientAnimation 10s ease infinite;
+        overflow: hidden;
+    }
+ 
+
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+ 
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+ .form-container {
+      background: rgb(41 38 38 / 25%);
+      backdrop-filter: blur(12px);
+      border-radius: 15px; 
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+      padding: 25px; 
+      width: 100%;
+      max-width: 450px; 
+      margin: 0 auto;
+      animation: float 6s ease-in-out infinite;
+    
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: white;
+      font-weight: 600;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      letter-spacing: 1px;
+       font-size: 1.5rem; 
+      margin-bottom: 20px; 
+    }
+
+    .form-label {
+      color: white;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+       font-size: 0.9rem; 
+    }
+
+    .form-control {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: white;
+      transition: all 0.3s ease;
+        font-size: 0.9rem; 
+    }
+
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .form-control.is-invalid {
+      border-color: rgba(255, 100, 100, 0.7);
+      background-color: rgba(255, 100, 100, 0.1);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .btn-primary:hover {
+      background: rgba(255, 255, 255, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .error-message {
+      color: rgba(255, 180, 180, 1);
+      font-size: 0.875rem;
+      margin-top: 5px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .login-link a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+       margin-top: 15px; 
+      font-size: 0.9rem;
+    }
+
+    .login-link a:hover {
+      color: rgba(255, 255, 255, 0.8);
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .password-requirements {
+      margin-top: 3px;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .requirement {
+      display: flex;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+
+    .requirement i {
+      margin-right: 5px;
+      font-size: 0.6rem;
+    }
+
+    .valid {
+      color: #4CAF50;
+    }
+
+    .invalid {
+      color: #f44336;
+    }
+
+    .password-strength {
+      margin-top: 5px;
+      font-size: 0.8rem;
+    }
+
+    .password-toggle {
+      cursor: pointer;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .password-container {
+      position: relative;
+    }
+    .password-container {
+    position: relative;
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 15px;  
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    z-index: 2;  
+  }
+
+  
+  #password {
+    padding-right: 40px;  
+  }
+
+
+   
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+  <div class="form-container">
+    <h2>User Registration</h2>
+    <form action="/register" method="POST" onsubmit="validateForm(event)">
+      <div class="mb-2">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" oninput="validateName()"
+          required>
+        <div id="name-error" class="error-message"></div> 
+      </div>
+
+      <div class="mb-2">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="student@gmail.com"
+          oninput="validateEmail()" required>
+        <div id="email-error" class="error-message"></div> 
+      </div>
+ 
+      <div class="mb-2">
+        <label for="class" class="form-label">Class (1-12)</label>
+        <input type="number" class="form-control" id="class" name="class" placeholder="1 to 12" min="1" max="12"
+          oninput="validateClass()" required>
+        <div id="class-error" class="error-message"></div> 
+      </div>
+
+      <div class="mb-2 password-container">
+        <label for="password" class="form-label">Password</label>
+        <div class="position-relative">
+          <input type="password" class="form-control" id="password" name="password" placeholder="Create password"
+            oninput="validatePassword()" required>
+          <span class="password-toggle" onclick="togglePasswordVisibility()">
+            <i class="fas fa-eye"></i>
+          </span>
+        </div>
+        <div id="password-error" class="error-message"></div>
+        <div id="password-strength" class="password-strength"></div> 
+        <div class="password-requirements">
+          <div class="requirement"><i id="length-icon" class="fas fa-circle"></i> Minimum 8 characters</div>
+          <div class="requirement"><i id="uppercase-icon" class="fas fa-circle"></i> At least one uppercase letter</div>
+          <div class="requirement"><i id="lowercase-icon" class="fas fa-circle"></i> At least one lowercase letter</div>
+          <div class="requirement"><i id="number-icon" class="fas fa-circle"></i> At least one number</div>
+          <div class="requirement"><i id="special-icon" class="fas fa-circle"></i> At least one special character</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="roleno" class="form-label">Roll Number (1-50)</label>
+        <input type="number" class="form-control" id="roleno" name="roleno" placeholder="1 to 50" min="1" max="50"
+          oninput="validateRollNo()" required>
+        <div id="rollno-error" class="error-message"></div> 
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <div class="login-link">
+      <a href="/">Already have an account? Log in</a>
+    </div>
+  </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    var successMessage = '<%= success_msg %>';
+    var errorMessage = '<%= error_msg %>';
+
+    if (successMessage) {
+      Swal.fire({
+        toast: true,
+        icon: 'success',
+        title: successMessage,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
+    }
+    if (errorMessage) {
+      Swal.fire({
+        toast: true,
+        icon: 'warning',
+        title: errorMessage,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
+    }
+
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.querySelector('.password-toggle i');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+      }
+    }
+
+    function validateName() {
+      const nameInput = document.getElementById('name');
+      const errorElement = document.getElementById('name-error');
+      const value = nameInput.value.trim();
+
+      if (!value) {
+        errorElement.textContent = 'Full name is required';
+        nameInput.classList.add('is-invalid');
+        return false;
+      } else if (!/^[a-zA-Z]+(?:\s[a-zA-Z]+)+$/.test(value)) {
+        errorElement.textContent = 'Please enter your full name (at least first and last name)';
+        nameInput.classList.add('is-invalid');
+        return false;
+      } else {
+        errorElement.textContent = '';
+        nameInput.classList.remove('is-invalid');
+        return true;
+      }
+    }
+
+    function validateEmail() {
+      const emailInput = document.getElementById('email');
+      const errorElement = document.getElementById('email-error');
+      const value = emailInput.value.trim();
+
+      if (!value) {
+        errorElement.textContent = 'Email is required';
+        emailInput.classList.add('is-invalid');
+        return false;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        errorElement.textContent = 'Please enter a valid email address';
+        emailInput.classList.add('is-invalid');
+        return false;
+      } else {
+        errorElement.textContent = '';
+        emailInput.classList.remove('is-invalid');
+        return true;
+      }
+    }
+
+    function validateClass() {
+      const classInput = document.getElementById('class');
+      const errorElement = document.getElementById('class-error');
+      const value = parseInt(classInput.value);
+
+      if (isNaN(value)) {
+        errorElement.textContent = 'Class must be a number';
+        classInput.classList.add('is-invalid');
+        return false;
+      } else if (value < 1 || value > 12) {
+        errorElement.textContent = 'Class must be between 1 and 12';
+        classInput.classList.add('is-invalid');
+        return false;
+      } else {
+        errorElement.textContent = '';
+        classInput.classList.remove('is-invalid');
+        return true;
+      }
+    }
+
+    function validateRollNo() {
+      const rollNoInput = document.getElementById('roleno');
+      const errorElement = document.getElementById('rollno-error');
+      const value = parseInt(rollNoInput.value);
+
+      if (isNaN(value)) {
+        errorElement.textContent = 'Roll number must be a number';
+        rollNoInput.classList.add('is-invalid');
+        return false;
+      } else if (value < 1 || value > 50) {
+        errorElement.textContent = 'Roll number must be between 1 and 50';
+        rollNoInput.classList.add('is-invalid');
+        return false;
+      } else {
+        errorElement.textContent = '';
+        rollNoInput.classList.remove('is-invalid');
+        return true;
+      }
+    }
+
+    function validatePassword() {
+      const passwordInput = document.getElementById('password');
+      const errorElement = document.getElementById('password-error');
+      const strengthText = document.getElementById('password-strength');
+      const lengthIcon = document.getElementById('length-icon');
+      const uppercaseIcon = document.getElementById('uppercase-icon');
+      const lowercaseIcon = document.getElementById('lowercase-icon');
+      const numberIcon = document.getElementById('number-icon');
+      const specialIcon = document.getElementById('special-icon');
+      const password = passwordInput.value;
+
+      [lengthIcon, uppercaseIcon, lowercaseIcon, numberIcon, specialIcon].forEach(icon => {
+        icon.classList.remove('valid', 'invalid');
+      });
+
+      const hasLength = password.length >= 8;
+      const hasUppercase = /[A-Z]/.test(password);
+      const hasLowercase = /[a-z]/.test(password);
+      const hasNumber = /[0-9]/.test(password);
+      const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+      updateIcon(lengthIcon, hasLength);
+      updateIcon(uppercaseIcon, hasUppercase);
+      updateIcon(lowercaseIcon, hasLowercase);
+      updateIcon(numberIcon, hasNumber);
+      updateIcon(specialIcon, hasSpecial);
+
+      let strength = 0;
+      if (hasLength) strength++;
+      if (hasUppercase) strength++;
+      if (hasLowercase) strength++;
+      if (hasNumber) strength++;
+      if (hasSpecial) strength++;
+
+      if (password.length === 0) {
+        strengthText.textContent = '';
+        strengthText.className = 'password-strength';
+        errorElement.textContent = 'Password is required';
+        passwordInput.classList.add('is-invalid');
+        return false;
+      } else if (password.length < 8) {
+        errorElement.textContent = 'Password must be at least 8 characters';
+        passwordInput.classList.add('is-invalid');
+        return false;
+      } else {
+        errorElement.textContent = '';
+        passwordInput.classList.remove('is-invalid');
+
+        switch (strength) {
+          case 0:
+          case 1:
+            strengthText.textContent = 'Very Weak';
+            strengthText.className = 'password-strength text-danger';
+            break;
+          case 2:
+            strengthText.textContent = 'Weak';
+            strengthText.className = 'password-strength text-warning';
+            break;
+          case 3:
+            strengthText.textContent = 'Moderate';
+            strengthText.className = 'password-strength text-info';
+            break;
+          case 4:
+            strengthText.textContent = 'Strong';
+            strengthText.className = 'password-strength text-primary';
+            break;
+          case 5:
+            strengthText.textContent = 'Very Strong';
+            strengthText.className = 'password-strength text-success';
+            break;
+        }
+        return true;
+      }
+    }
+
+    function updateIcon(iconElement, isValid) {
+      if (isValid) {
+        iconElement.classList.add('valid');
+        iconElement.classList.remove('invalid');
+      } else {
+        iconElement.classList.add('invalid');
+        iconElement.classList.remove('valid');
+      }
+    }
+
+    function validateForm(event) {
+      event.preventDefault();
+
+      const isNameValid = validateName();
+      const isEmailValid = validateEmail();
+      const isClassValid = validateClass();
+      const isPasswordValid = validatePassword();
+      const isRollNoValid = validateRollNo();
+
+      if (isNameValid && isEmailValid && isClassValid && isPasswordValid && isRollNoValid) {
+        event.target.submit();
+      } else {
+        const firstError = document.querySelector('.is-invalid');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

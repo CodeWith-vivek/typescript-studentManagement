@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit User Data</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url('/assets/images/useredit.jpg') no-repeat center center fixed;
+      background-size: cover;
+      animation: gradientAnimation 10s ease infinite;
+      overflow: hidden;
+    }
+
+    .form-container {
+      background: rgb(12 11 11 / 26%);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .form-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(31, 38, 135, 0.3);
+    }
+
+    .form-title {
+      margin-bottom: 30px;
+      text-align: center;
+      font-weight: bold;
+      color: #ffffff;
+      font-size: 2rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      border-radius: 10px;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #6a11cb;
+      box-shadow: 0 0 0 0.2rem rgba(106, 17, 203, 0.25);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .btn-custom {
+         background: linear-gradient(135deg, #1b700d 0%, #25c8fc 100%);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-custom:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 14px rgba(0, 0, 0, 0.3);
+         background: linear-gradient(135deg, #2db419 0%, #46c0e9 100%);
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .input-group-text {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-right: none;
+      color: #ffffff;
+    }
+
+    .name-requirements {
+      margin-top: 5px;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .requirement {
+      display: flex;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+
+    .requirement i {
+      margin-right: 5px;
+      font-size: 0.6rem;
+    }
+
+    .valid {
+      color: #4CAF50;
+    }
+
+    .invalid {
+      color: #f44336;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="form-container">
+          <h2 class="form-title">Edit User Data</h2>
+          <form id="edit-user-form" action="/admin/edit/<%= userData.email %>" method="POST"
+            onsubmit="validateEditForm(event)">
+            <div class="mb-4">
+              <label for="name" class="form-label">Full Name</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                <input type="text" id="name" name="name" class="form-control" placeholder="John Doe"
+                  value="<%= userData ? userData.name : '' %>" oninput="validateName()" required>
+              </div>
+              <div id="name-error" class="error-message"></div>
+              <div class="name-requirements">
+                <div class="requirement"><i id="name-format-icon" class="fas fa-circle"></i> Only letters and spaces
+                </div>
+                <div class="requirement"><i id="name-length-icon" class="fas fa-circle"></i> At least first and last
+                  name</div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="class" class="form-label">Class (1-12)</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-graduation-cap"></i></span>
+                <input type="number" id="class" name="class" class="form-control" placeholder="1 to 12" min="1" max="12"
+                  value="<%= userData ? userData.class : '' %>" oninput="validateClass()" required>
+              </div>
+              <div id="class-error" class="error-message"></div>
+            </div>
+
+            <div class="mb-4">
+              <label for="roleno" class="form-label">Role Number (1-50)</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-id-badge"></i></span>
+                <input type="number" id="roleno" name="roleno" class="form-control" placeholder="1 to 50" min="1"
+                  max="50" value="<%= userData ? userData.roleno : '' %>" oninput="validateRollNo()" required>
+              </div>
+              <div id="rollno-error" class="error-message"></div>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-custom">
+                <i class="fas fa-save me-2"></i>Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function validateName() {
+      const nameInput = document.getElementById('name');
+      const errorElement = document.getElementById('name-error');
+      const formatIcon = document.getElementById('name-format-icon');
+      const lengthIcon = document.getElementById('name-length-icon');
+      const value = nameInput.value.trim();
+
+      const hasValidFormat = /^[a-zA-Z ]+$/.test(value);
+      updateIcon(formatIcon, hasValidFormat);
+
+      const hasFullName = value.split(' ').filter(word => word.length > 0).length >= 2;
+      updateIcon(lengthIcon, hasFullName);
+
+      if (!value) {
+        setError(nameInput, errorElement, 'Full name is required');
+        return false;
+      } else if (!hasValidFormat) {
+        setError(nameInput, errorElement, 'Name must contain only letters and spaces');
+        return false;
+      } else if (!hasFullName) {
+        setError(nameInput, errorElement, 'Please enter both first and last name');
+        return false;
+      } else {
+        clearError(nameInput, errorElement);
+        return true;
+      }
+    }
+
+    function validateClass() {
+      const classInput = document.getElementById('class');
+      const errorElement = document.getElementById('class-error');
+      const value = parseInt(classInput.value);
+
+      if (isNaN(value)) {
+        setError(classInput, errorElement, 'Class must be a number');
+        return false;
+      } else if (value < 1 || value > 12) {
+        setError(classInput, errorElement, 'Class must be between 1 and 12');
+        return false;
+      } else {
+        clearError(classInput, errorElement);
+        return true;
+      }
+    }
+
+    function validateRollNo() {
+      const rollNoInput = document.getElementById('roleno');
+      const errorElement = document.getElementById('rollno-error');
+      const value = parseInt(rollNoInput.value);
+
+      if (isNaN(value)) {
+        setError(rollNoInput, errorElement, 'Roll number must be a number');
+        return false;
+      } else if (value < 1 || value > 50) {
+        setError(rollNoInput, errorElement, 'Roll number must be between 1 and 50');
+        return false;
+      } else {
+        clearError(rollNoInput, errorElement);
+        return true;
+      }
+    }
+
+    function updateIcon(iconElement, isValid) {
+      if (isValid) {
+        iconElement.classList.add('valid');
+        iconElement.classList.remove('invalid');
+      } else {
+        iconElement.classList.add('invalid');
+        iconElement.classList.remove('valid');
+      }
+    }
+
+    function setError(inputElement, errorElement, message) {
+      errorElement.textContent = message;
+      inputElement.classList.add('is-invalid');
+    }
+
+    function clearError(inputElement, errorElement) {
+      errorElement.textContent = '';
+      inputElement.classList.remove('is-invalid');
+    }
+
+    function validateEditForm(event) {
+      event.preventDefault();
+
+      const isNameValid = validateName();
+      const isClassValid = validateClass();
+      const isRollNoValid = validateRollNo();
+
+      if (isNameValid && isClassValid && isRollNoValid) {
+        event.target.submit();
+      } else {
+  
+        const firstError = document.querySelector('.is-invalid');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

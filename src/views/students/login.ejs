@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url('/assets/images/studentlog.jpg') no-repeat center center fixed;
+      background-size: cover;
+      animation: gradientAnimation 10s ease infinite;
+      overflow: hidden;
+    }
+
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .login-header {
+      background: rgb(0 0 0 / 68%);
+      color: white;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding: 25px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .login-header h2 {
+      margin: 0;
+      font-weight: 600;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      letter-spacing: 1px;
+    }
+
+    .card-body {
+      padding: 30px !important;
+      background-color: #00000054;
+    }
+
+    .form-control {
+      background: rgb(34 31 31 / 20%);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      padding: 12px 15px;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .form-label {
+      color: white;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+      background: rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 12px;
+      padding: 12px;
+      color: white;
+      font-weight: 600;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: rgba(255, 255, 255, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .text-decoration-none {
+      color: white;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .text-decoration-none:hover {
+      color: rgba(255, 255, 255, 0.8);
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .login-card {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .password-input-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.7);
+      transition: all 0.3s ease;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 0 10px;
+    }
+
+    .toggle-password:hover {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    #password {
+      padding-right: 45px;
+    }
+
+    .input-with-icon {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="login-card">
+          <div class="login-header">
+            <h2>Login</h2>
+          </div>
+          <div class="card-body">
+            <form action="/login" method="POST">
+              <div class="mb-4">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email"
+                  required>
+                <div id="emailFeedback" class="form-text text-light"></div>
+              </div>
+              <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-with-icon">
+                  <input type="password" class="form-control" id="password" name="password"
+                    placeholder="Enter your password" required>
+                  <button type="button" class="input-icon" id="togglePassword">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+                <div id="passwordFeedback" class="form-text text-light"></div>
+              </div>
+              <div class="d-grid mb-4">
+                <button type="submit" class="btn btn-primary">Login</button>
+              </div>
+
+              <div class="text-center">
+                <a href="/register" class="text-decoration-none">Create an account</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    var successMessage = '<%= success_msg %>';
+    var errorMessage = '<%= error_msg %>';
+
+    if (successMessage) {
+      Swal.fire({
+        toast: true,
+        icon: 'success',
+        title: successMessage,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
+    }
+    if (errorMessage) {
+      Swal.fire({
+        toast: true,
+        icon: 'warning',
+        title: errorMessage,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+      });
+    }
+  </script>
+  <script>
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const emailFeedback = document.getElementById("emailFeedback");
+    const passwordFeedback = document.getElementById("passwordFeedback");
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+    emailInput.addEventListener("input", () => {
+      if (emailRegex.test(emailInput.value.trim())) {
+        emailFeedback.textContent = "";
+        emailInput.classList.remove("is-invalid");
+        emailInput.classList.add("is-valid");
+      } else {
+        emailFeedback.textContent = "Invalid email format";
+        emailInput.classList.add("is-invalid");
+        emailInput.classList.remove("is-valid");
+      }
+    });
+
+    passwordInput.addEventListener("input", () => {
+      if (passwordRegex.test(passwordInput.value.trim())) {
+        passwordFeedback.textContent = "";
+        passwordInput.classList.remove("is-invalid");
+        passwordInput.classList.add("is-valid");
+      } else {
+        passwordFeedback.innerHTML = `
+        Password must have:<br>
+        • At least 8 characters<br>
+        • One uppercase letter<br>
+        • One lowercase letter<br>
+        • One number<br>
+        • One special character
+      `;
+        passwordInput.classList.add("is-invalid");
+        passwordInput.classList.remove("is-valid");
+      }
+    });
+
+    const togglePassword = document.querySelector('#togglePassword');
+    const passwordIcon = togglePassword.querySelector('i');
+
+    togglePassword.addEventListener('click', function (e) {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      passwordIcon.classList.toggle('fa-eye');
+      passwordIcon.classList.toggle('fa-eye-slash');
+    });
+
+    const loginForm = document.querySelector("form");
+    loginForm.addEventListener("submit", (e) => {
+      if (
+        !emailRegex.test(emailInput.value.trim()) ||
+        !passwordRegex.test(passwordInput.value.trim())
+      ) {
+        e.preventDefault();
+        Swal.fire({
+          icon: "error",
+          title: "Form Invalid",
+          text: "Please fix validation errors before submitting.",
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
