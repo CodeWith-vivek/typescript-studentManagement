@@ -1,5 +1,5 @@
 import { App } from "./app";
-import { ConnectMongo } from "./config/dbConnection";
+import { ConnectMongo } from "./config/database";
 import dotenv from "dotenv";
 
 dotenv.config();

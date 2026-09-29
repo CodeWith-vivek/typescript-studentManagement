@@ -5,23 +5,17 @@ import session from "express-session";
 import flash from "connect-flash";
 import nocache from "nocache";
 
-import { StudentRoute } from "./routes/studentRoutes";
-import { StudentController } from "./controller/studentController";
-import { StudentService } from "./services/studentServices";
-import { StudentRepository } from "./repository/studentRepository";
+import "./shared/types/session";
 
-import { AdminRepository } from "./repository/adminRepository";
-import { AdminService } from "./services/adminServices";
-import { AdminController } from "./controller/adminController";
-import { AdminRoute } from "./routes/adminRoutes";
+import { StudentRoute } from "./modules/student/student.routes";
+import { StudentController } from "./modules/student/student.controller";
+import { StudentService } from "./modules/student/student.service";
+import { StudentRepository } from "./modules/student/student.repository";
 
-
-declare module "express-session" {
-  interface SessionData {
-    student?: string | null;
-    admin?: string | null;
-  }
-}
+import { AdminRepository } from "./modules/admin/admin.repository";
+import { AdminService } from "./modules/admin/admin.service";
+import { AdminController } from "./modules/admin/admin.controller";
+import { AdminRoute } from "./modules/admin/admin.routes";
 
 export class App {
   public app: Application;
@@ -37,11 +31,11 @@ export class App {
   }
 
   private setStaticFiles(): void {
-    this.app.use(express.static(path.join(__dirname, "../src/public")));
+    this.app.use(express.static(path.join(__dirname, "../public")));
   }
 
   private setupViewEngine() {
-    this.app.set("views", path.join(__dirname, "views"));
+    this.app.set("views", path.join(__dirname, "../views"));
     this.app.set("view engine", "ejs");
   }
 
